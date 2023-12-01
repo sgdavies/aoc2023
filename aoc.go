@@ -48,14 +48,12 @@ func main() {
 	} else {
 		for _, d := range args[1:] {
 			day, err := strconv.Atoi(d)
-			if err != nil {
-				err = fmt.Errorf("Invalid day '"+d+"': ", err)
-				panic(err)
-			}
-			if day > len(days) || days[day-1] == nil {
-				panic("Day " + fmt.Sprint(day) + " not implemented")
+			if err != nil || day > len(days) || days[day-1] == nil {
+				fmt.Println("Invalid day or not implemented: " + d)
+				continue
 			}
 
+			fmt.Println("Day " + fmt.Sprintf("%02d", day))
 			days[day-1]()
 		}
 	}
