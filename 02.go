@@ -15,7 +15,7 @@ func day02() {
 		log.Fatal(err)
 	}
 	defer file.Close()
-	
+
 	possibleSum := 0
 	powerSum := 0
 
@@ -37,7 +37,7 @@ func day02() {
 func evaluateBag(line string) (int, bool, int) {
 	// fmt.Println(line)
 	possible := true
-	mins := [3]int{0,0,0} // r,g,b
+	mins := [3]int{0, 0, 0} // r,g,b
 
 	parts := strings.Split(line, ": ")
 	gameId, _ := strconv.Atoi(parts[0][5:]) // strip "Game "
@@ -49,7 +49,8 @@ func evaluateBag(line string) (int, bool, int) {
 			number, _ := strconv.Atoi(bits[0])
 			color := bits[1]
 			switch color {
-				case "red": {
+			case "red":
+				{
 					if number > 12 {
 						possible = false
 					}
@@ -58,7 +59,8 @@ func evaluateBag(line string) (int, bool, int) {
 						mins[0] = number
 					}
 				}
-				case "green": {
+			case "green":
+				{
 					if number > 13 {
 						possible = false
 					}
@@ -67,7 +69,8 @@ func evaluateBag(line string) (int, bool, int) {
 						mins[1] = number
 					}
 				}
-				case "blue": {
+			case "blue":
+				{
 					if number > 14 {
 						possible = false
 					}
@@ -76,12 +79,13 @@ func evaluateBag(line string) (int, bool, int) {
 						mins[2] = number
 					}
 				}
-				default: {
+			default:
+				{
 					panic("Unexpected color " + color + " in line '" + line + "'")
 				}
 			}
 		}
 	}
 
-	return gameId, possible, mins[0]*mins[1]*mins[2]
+	return gameId, possible, mins[0] * mins[1] * mins[2]
 }
