@@ -8,7 +8,7 @@ import (
 
 var days = [25]func(){
 	day01,
-	nil,
+	day02,
 	nil,
 	nil,
 	nil,
