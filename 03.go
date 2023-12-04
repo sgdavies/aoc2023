@@ -1,10 +1,10 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
 	"log"
 	"os"
-	"bufio"
 	"strconv"
 )
 
@@ -15,19 +15,19 @@ type Point struct {
 
 func (p Point) Adjacents() []Point {
 	return []Point{
-		Point{p.row-1, p.col-1},
-		Point{p.row-1, p.col},
-		Point{p.row-1, p.col+1},
-		Point{p.row, p.col-1},
-		Point{p.row, p.col+1},
-		Point{p.row+1, p.col-1},
-		Point{p.row+1, p.col},
-		Point{p.row+1, p.col+1},
+		{p.row - 1, p.col - 1},
+		{p.row - 1, p.col},
+		{p.row - 1, p.col + 1},
+		{p.row, p.col - 1},
+		{p.row, p.col + 1},
+		{p.row + 1, p.col - 1},
+		{p.row + 1, p.col},
+		{p.row + 1, p.col + 1},
 	}
 }
 
 type number struct {
-	id int
+	id    int
 	value int
 }
 
@@ -56,11 +56,11 @@ func day03() {
 		for col, c := range line {
 			if c == '.' {
 				currentNumber = nil
-			} else if '0'<=c && c<='9' {
+			} else if '0' <= c && c <= '9' {
 				if currentNumber == nil {
 					num := string(c)
-					for _, c2 := range(line[col+1:]) {
-						if !('0'<=c2 && c2<='9') {
+					for _, c2 := range line[col+1:] {
+						if !('0' <= c2 && c2 <= '9') {
 							break
 						} else {
 							num += string(c2)
@@ -68,13 +68,13 @@ func day03() {
 					}
 					value, _ := strconv.Atoi(num)
 					currentNumber = &number{nextId, value}
-					nextId ++
+					nextId++
 				}
 
-				numbers[Point{row,col}] = *currentNumber
+				numbers[Point{row, col}] = *currentNumber
 			} else {
 				currentNumber = nil
-				symbols[Point{row,col}] = c
+				symbols[Point{row, col}] = c
 			}
 		}
 	}
@@ -95,7 +95,7 @@ func day03() {
 			}
 		}
 		// Part two
-		if sym == '*'  && len(adjs) == 2 {
+		if sym == '*' && len(adjs) == 2 {
 			gearRatio := 1
 			for _, v := range adjs {
 				gearRatio *= v.value
