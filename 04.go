@@ -63,27 +63,9 @@ func scratch(line string) int {
 	winningNumbers := scratchNumbers(partNumbers[0])
 	myNumbers := scratchNumbers(partNumbers[1])
 
-	myIx := 0
 	score := 0
-	stop := false
-	for _, winner := range winningNumbers {
-		for myNumbers[myIx] < winner {
-			myIx += 1
-			if myIx >= len(myNumbers) {
-				stop = true
-				break
-			}
-		}
-		if stop {
-			break
-		}
-
-		nextMine := myNumbers[myIx]
-		if winner < nextMine {
-			continue
-		}
-
-		if winner == nextMine {
+	for _, mine := range myNumbers {
+		if slices.Contains(winningNumbers, mine) {
 			score += 1
 		}
 	}
