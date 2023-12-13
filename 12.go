@@ -8,6 +8,8 @@ import (
 	"strings"
 )
 
+var memo = map[string]int{}
+
 func day12() {
 	file, err := os.Open("data/12.txt")
 	if err != nil {
@@ -18,7 +20,7 @@ func day12() {
 
 	partOne := 0
 	partTwo := 0
-	progress := 0
+	// progress := 0
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
 		line := scanner.Text()
@@ -41,16 +43,16 @@ func day12() {
 		bsum := countWays(twoGroups, twoTarget)
 		partTwo += bsum
 
-		progress += 1
-		if progress%10 == 0 {
-			if progress%100 == 0 {
-				fmt.Println(progress)
-			} else {
-				fmt.Print(progress)
-			}
-		} else {
-			fmt.Print(".")
-		}
+		// progress += 1
+		// if progress%10 == 0 {
+		// 	if progress%100 == 0 {
+		// 		fmt.Println(progress)
+		// 	} else {
+		// 		fmt.Print(progress)
+		// 	}
+		// } else {
+		// 	fmt.Print(".")
+		// }
 	}
 	fmt.Println()
 
@@ -83,6 +85,11 @@ func parseSprings(groupStr, targetStr string) ([]string, []int) {
 }
 
 func countWays(groups []string, target []int) int {
+	key := makeKey(groups, target)
+	if val, present := memo[key]; present {
+		return val
+	}
+
 	totalWays := 0
 	for ig, g := range groups {
 		for _, remnant := range springMatch(g, target[0]) {
@@ -108,6 +115,7 @@ func countWays(groups []string, target []int) int {
 		}
 	}
 
+	memo[key] = totalWays
 	return totalWays
 }
 
@@ -145,4 +153,12 @@ func containsDefiniteSprings(groups []string) bool {
 		}
 	}
 	return false
+}
+
+func makeKey(groups []string, target []int) string {
+	key := strings.Join(groups, ".") + " "
+	for _, t := range target {
+		key += string(t) + ","
+	}
+	return key
 }
