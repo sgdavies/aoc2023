@@ -11,9 +11,9 @@ type direction int
 
 const (
 	above direction = iota
-	left
+	toTheLeft
 	below
-	right
+	toTheRight
 )
 
 func day10() {
@@ -58,7 +58,7 @@ func day10() {
 		nextDirection = above
 	} else if piece, ok := pieces[pRight]; ok && slices.Contains([]rune{'-', '7', 'J'}, piece) {
 		nextPiece = pRight
-		nextDirection = right
+		nextDirection = toTheRight
 	} else if piece, ok := pieces[pBelow]; ok && slices.Contains([]rune{'|', 'J', 'L'}, piece) {
 		nextPiece = pBelow
 		nextDirection = below
@@ -85,60 +85,60 @@ func day10() {
 			}
 		case '-':
 			{
-				if nextDirection == left {
+				if nextDirection == toTheLeft {
 					nextPiece = Point{nextPiece.row, nextPiece.col - 1}
-					nextDirection = left
-				} else if nextDirection == right {
+					nextDirection = toTheLeft
+				} else if nextDirection == toTheRight {
 					nextPiece = Point{nextPiece.row, nextPiece.col + 1}
-					nextDirection = right
+					nextDirection = toTheRight
 				} else {
 					panic("Can't get here from above or below")
 				}
 			}
 		case 'J':
 			{
-				if nextDirection == right {
+				if nextDirection == toTheRight {
 					nextPiece = Point{nextPiece.row - 1, nextPiece.col}
 					nextDirection = above
 				} else if nextDirection == below {
 					nextPiece = Point{nextPiece.row, nextPiece.col - 1}
-					nextDirection = left
+					nextDirection = toTheLeft
 				} else {
 					panic("Can't get here from right or below")
 				}
 			}
 		case 'L':
 			{
-				if nextDirection == left {
+				if nextDirection == toTheLeft {
 					nextPiece = Point{nextPiece.row - 1, nextPiece.col}
 					nextDirection = above
 				} else if nextDirection == below {
 					nextPiece = Point{nextPiece.row, nextPiece.col + 1}
-					nextDirection = right
+					nextDirection = toTheRight
 				} else {
 					panic("Can't get here from left or below")
 				}
 			}
 		case '7':
 			{
-				if nextDirection == right {
+				if nextDirection == toTheRight {
 					nextPiece = Point{nextPiece.row + 1, nextPiece.col}
 					nextDirection = below
 				} else if nextDirection == above {
 					nextPiece = Point{nextPiece.row, nextPiece.col - 1}
-					nextDirection = left
+					nextDirection = toTheLeft
 				} else {
 					panic("Can't get here from right or above")
 				}
 			}
 		case 'F':
 			{
-				if nextDirection == left {
+				if nextDirection == toTheLeft {
 					nextPiece = Point{nextPiece.row + 1, nextPiece.col}
 					nextDirection = below
 				} else if nextDirection == above {
 					nextPiece = Point{nextPiece.row, nextPiece.col + 1}
-					nextDirection = right
+					nextDirection = toTheRight
 				} else {
 					panic("Can't get here from above or left")
 				}
@@ -167,10 +167,10 @@ func day10() {
 		dirSToPrev = below
 	case below:
 		dirSToPrev = above
-	case left:
-		dirSToPrev = right
-	case right:
-		dirSToPrev = left
+	case toTheLeft:
+		dirSToPrev = toTheRight
+	case toTheRight:
+		dirSToPrev = toTheLeft
 	}
 	// Sort
 	if firstDirection < dirSToPrev {
@@ -181,9 +181,9 @@ func day10() {
 	case above:
 		{
 			switch dirSToPrev {
-			case left:
+			case toTheLeft:
 				s = 'J'
-			case right:
+			case toTheRight:
 				s = 'L'
 			case below:
 				s = '|'
@@ -194,9 +194,9 @@ func day10() {
 	case below:
 		{
 			switch dirSToPrev {
-			case left:
+			case toTheLeft:
 				s = '7'
-			case right:
+			case toTheRight:
 				s = 'F'
 			case above:
 				s = '|'
@@ -204,29 +204,29 @@ func day10() {
 				panic("Can't both be below")
 			}
 		}
-	case left:
+	case toTheLeft:
 		{
 			switch dirSToPrev {
 			case above:
 				s = 'J'
-			case right:
+			case toTheRight:
 				s = '-'
 			case below:
 				s = '7'
-			case left:
+			case toTheLeft:
 				panic("Can't both be left")
 			}
 		}
-	case right:
+	case toTheRight:
 		{
 			switch dirSToPrev {
-			case left:
+			case toTheLeft:
 				s = '-'
 			case above:
 				s = 'L'
 			case below:
 				s = 'F'
-			case right:
+			case toTheRight:
 				panic("Can't both be right")
 			}
 		}
@@ -295,10 +295,10 @@ func evaluatePipe(p Point, piece rune, facing direction, turns int, leftSquares 
 	switch piece {
 	case '-':
 		{
-			if facing == right {
+			if facing == toTheRight {
 				leftSquares[Point{p.row - 1, p.col}] = true
 				rightSquares[Point{p.row + 1, p.col}] = true
-			} else if facing == left {
+			} else if facing == toTheLeft {
 				leftSquares[Point{p.row + 1, p.col}] = true
 				rightSquares[Point{p.row - 1, p.col}] = true
 			} else {
@@ -321,12 +321,12 @@ func evaluatePipe(p Point, piece rune, facing direction, turns int, leftSquares 
 		{
 			if facing == above {
 				turns += 1
-				facing = right
+				facing = toTheRight
 
 				leftSquares[Point{p.row, p.col - 1}] = true
 				leftSquares[Point{p.row - 1, p.col - 1}] = true
 				leftSquares[Point{p.row - 1, p.col}] = true
-			} else if facing == left {
+			} else if facing == toTheLeft {
 				turns -= 1
 				facing = below
 
@@ -341,12 +341,12 @@ func evaluatePipe(p Point, piece rune, facing direction, turns int, leftSquares 
 		{
 			if facing == below {
 				turns += 1
-				facing = left
+				facing = toTheLeft
 
 				leftSquares[Point{p.row, p.col + 1}] = true
 				leftSquares[Point{p.row + 1, p.col + 1}] = true
 				leftSquares[Point{p.row + 1, p.col}] = true
-			} else if facing == right {
+			} else if facing == toTheRight {
 				turns -= 1
 				facing = above
 
@@ -359,7 +359,7 @@ func evaluatePipe(p Point, piece rune, facing direction, turns int, leftSquares 
 		}
 	case 'L':
 		{
-			if facing == left {
+			if facing == toTheLeft {
 				turns += 1
 				facing = above
 
@@ -368,7 +368,7 @@ func evaluatePipe(p Point, piece rune, facing direction, turns int, leftSquares 
 				leftSquares[Point{p.row, p.col - 1}] = true
 			} else if facing == below {
 				turns -= 1
-				facing = right
+				facing = toTheRight
 
 				rightSquares[Point{p.row, p.col - 1}] = true
 				rightSquares[Point{p.row + 1, p.col - 1}] = true
@@ -379,7 +379,7 @@ func evaluatePipe(p Point, piece rune, facing direction, turns int, leftSquares 
 		}
 	case '7':
 		{
-			if facing == right {
+			if facing == toTheRight {
 				turns += 1
 				facing = below
 
@@ -388,7 +388,7 @@ func evaluatePipe(p Point, piece rune, facing direction, turns int, leftSquares 
 				leftSquares[Point{p.row, p.col + 1}] = true
 			} else if facing == above {
 				turns -= 1
-				facing = left
+				facing = toTheLeft
 
 				rightSquares[Point{p.row, p.col + 1}] = true
 				rightSquares[Point{p.row - 1, p.col + 1}] = true

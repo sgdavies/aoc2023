@@ -158,7 +158,7 @@ func containsDefiniteSprings(groups []string) bool {
 func makeKey(groups []string, target []int) string {
 	key := strings.Join(groups, ".") + " "
 	for _, t := range target {
-		key += string(t) + ","
+		key += fmt.Sprint(t) + ","
 	}
 	return key
 }
