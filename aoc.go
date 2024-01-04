@@ -26,7 +26,7 @@ var days = [25]func(){
 	day17,
 	day18,
 	day19,
-	nil,
+	day20,
 	nil,
 	nil,
 	nil,
