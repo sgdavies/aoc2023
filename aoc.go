@@ -31,7 +31,7 @@ var days = [25]func(){
 	day22,
 	day23,
 	day24,
-	nil,
+	day25,
 }
 
 func main() {
